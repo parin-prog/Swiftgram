@@ -1,7 +1,6 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -12,26 +11,29 @@ import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { SignupFormSchema } from '@/lib/validation'
+import { SignupValidation } from '@/lib/validation'
 import Loader from '@/components/ui/shared/Loader'
 import { Link } from 'react-router-dom'
+import { createUserAccount } from '@/lib/appwrite/api'
 
 const SignupForm = () => {
   let isLoading = true;
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof SignupFormSchema>>({
-    resolver: zodResolver(SignupFormSchema),
+  const form = useForm<z.infer<typeof SignupValidation>>({
+    resolver: zodResolver(SignupValidation),
     defaultValues: {
+      name:"",
       username: "",
+      email: "",
+      password: "",
     },
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof SignupFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof SignupValidation>) {
+    const newUser = await createUserAccount(values);
+    console.log(newUser)
   }
 
   return (
