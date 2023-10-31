@@ -7,7 +7,7 @@ import AuthLayout from './_auth/AuthLayout';
 
 const App = () => {
   return (
-    <main className="text-3xl font-bold underline">
+    <main className="">
       <Routes>
         <Route element={<AuthLayout />}>
           <Route path='/sign-in' element={<SigninForm />} />
